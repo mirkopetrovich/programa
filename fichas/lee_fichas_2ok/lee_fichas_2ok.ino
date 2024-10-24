@@ -17,6 +17,8 @@
 #include "ArduinoGraphics.h"
 #include "Arduino_LED_Matrix.h"
 
+#include "animation.h"
+
 ArduinoLEDMatrix matrix;
 
 #define RST_PIN         9          // Configurable, see typical pin layout above
@@ -30,16 +32,20 @@ MFRC522 mfrc522[NR_OF_READERS];   // Create MFRC522 instance.
 
 void setup() {
 
-  SPI.begin();       
+  SPI.begin(); 
+  matrix.loadSequence(frames);      
   matrix.begin();
+  matrix.play(true);
   //matrix.textScrollSpeed(100);
-
+delay (5000);
+//matrix.play(false);
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
     mfrc522[reader].PCD_Init(ssPins[reader], RST_PIN); // Init each MFRC522 card
   }
 }
 
 void loop() {
+
 
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
     // Look for new cards
@@ -51,15 +57,34 @@ void loop() {
       // Halt PICC
      // mfrc522[reader].PICC_HaltA();
       // Stop encryption on PCD
-      mfrc522[reader].PCD_StopCrypto1();
+      //mfrc522[reader].PCD_StopCrypto1();
     } 
 
     else {
       if (reader==0) {
-        
+        mfrc522[reader].PICC_HaltA();
+        mfrc522[reader].PCD_StopCrypto1();
+        matrix.beginDraw();
+   matrix.stroke(0xFFFFFFFF);
+  matrix.textFont(Font_4x6);
+  matrix.beginText(2, 2, 0xFFFFFF);
+  matrix.println(" ");
+  matrix.endText();
+  matrix.endDraw(); 
+      }
+      if (reader==1) {
+        mfrc522[reader].PICC_HaltA();
+        mfrc522[reader].PCD_StopCrypto1();
+      matrix.beginDraw();
+   matrix.stroke(0xFFFFFFFF);
+  matrix.textFont(Font_4x6);
+  matrix.beginText(7, 2, 0xFFFFFF);
+  matrix.println(" ");
+  matrix.endText();
+  matrix.endDraw();
       }
     }
-  } 
+  }
 }
 
 /**
@@ -116,14 +141,14 @@ void ficha_led_1(byte *buffer, byte bufferSize) {
   
   matrix.endText();
   matrix.endDraw();
-  delay (100);
+  /*delay (100);
   matrix.beginDraw();
    matrix.stroke(0xFFFFFFFF);
   matrix.textFont(Font_4x6);
   matrix.beginText(2, 2, 0xFFFFFF);
   matrix.println(" ");
   matrix.endText();
-  matrix.endDraw();
+  matrix.endDraw();*/
 
   
 }
@@ -143,14 +168,14 @@ void ficha_led_2(byte *buffer, byte bufferSize) {
   if (cola==0x6D) matrix.println("4");
   matrix.endText();
   matrix.endDraw();
-  delay (100);
+ /* delay (100);
   matrix.beginDraw();
    matrix.stroke(0xFFFFFFFF);
   matrix.textFont(Font_4x6);
   matrix.beginText(7, 2, 0xFFFFFF);
   matrix.println(" ");
   matrix.endText();
-  matrix.endDraw();
+  matrix.endDraw();*/
 
   
 }
