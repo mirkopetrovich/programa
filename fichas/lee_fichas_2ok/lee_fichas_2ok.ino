@@ -36,9 +36,8 @@ void setup() {
   matrix.loadSequence(frames);      
   matrix.begin();
   matrix.play(true);
-  //matrix.textScrollSpeed(100);
-delay (5000);
-//matrix.play(false);
+  delay (5000);
+
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
     mfrc522[reader].PCD_Init(ssPins[reader], RST_PIN); // Init each MFRC522 card
   }
@@ -87,43 +86,7 @@ void loop() {
   }
 }
 
-/**
- * Helper routine to dump a byte array as hex values to Serial.
- */
-void dump_byte_array(byte *buffer, byte bufferSize) {
-  for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-    Serial.print(buffer[i], HEX);
-  }
-}
 
-void ficha(byte *buffer, byte bufferSize) {
-  Serial.print(buffer[bufferSize-1], HEX);
-  Serial.print(" ");
-  Serial.println(buffer[bufferSize-1]);
-}
-
-void ficha_led(byte *buffer, byte bufferSize) {
-
-  matrix.beginDraw();
-  matrix.stroke(0xFFFFFFFF);
-  matrix.textFont(Font_4x6);
-  matrix.beginText(0, 1, 0xFFFFFF);
-  matrix.print(buffer[bufferSize-1] < 0x10 ? "0":"");
-  matrix.println(buffer[bufferSize-1],HEX);
-  matrix.endText();
-  matrix.endDraw();
-  delay (1000);
-  matrix.beginDraw();
-  matrix.stroke(0xFFFFFFFF);
-  matrix.textFont(Font_4x6);
-  matrix.beginText(0, 1, 0xFFFFFF);
-  matrix.println("  ");
-  matrix.endText();
-  matrix.endDraw();
-
-  
-}
 
 void ficha_led_1(byte *buffer, byte bufferSize) {
 
@@ -131,24 +94,19 @@ void ficha_led_1(byte *buffer, byte bufferSize) {
   matrix.stroke(0xFFFFFFFF);
   matrix.textFont(Font_4x6);
   matrix.beginText(2, 2, 0xFFFFFF);
-  //matrix.print(buffer[bufferSize-1] < 0x10 ? "0":"");
-  //matrix.println(buffer[bufferSize-1],HEX);
   byte cola = buffer[bufferSize-1];
-  if (cola==0xFA) matrix.println("1");
+
+
+  /*if (cola==0xFA) matrix.println("1");
   if (cola==0x0D) matrix.println("2");
   if (cola==0xA6) matrix.println("3");
-  if (cola==0x6D) matrix.println("4");
+  if (cola==0x6D) matrix.println("4");*/
+
+  matrix.println("1");
   
   matrix.endText();
   matrix.endDraw();
-  /*delay (100);
-  matrix.beginDraw();
-   matrix.stroke(0xFFFFFFFF);
-  matrix.textFont(Font_4x6);
-  matrix.beginText(2, 2, 0xFFFFFF);
-  matrix.println(" ");
-  matrix.endText();
-  matrix.endDraw();*/
+
 
   
 }
@@ -159,23 +117,17 @@ void ficha_led_2(byte *buffer, byte bufferSize) {
   matrix.stroke(0xFFFFFFFF);
   matrix.textFont(Font_4x6);
   matrix.beginText(7, 2, 0xFFFFFF);
-  //matrix.print(buffer[bufferSize-1] < 0x10 ? "0":"");
-  //matrix.println(buffer[bufferSize-1],HEX);
   byte cola = buffer[bufferSize-1];
-  if (cola==0xFA) matrix.println("1");
+
+  /*if (cola==0xFA) matrix.println("1");
   if (cola==0x0D) matrix.println("2");
   if (cola==0xA6) matrix.println("3");
-  if (cola==0x6D) matrix.println("4");
+  if (cola==0x6D) matrix.println("4");*/
+
+matrix.println("2");
   matrix.endText();
   matrix.endDraw();
- /* delay (100);
-  matrix.beginDraw();
-   matrix.stroke(0xFFFFFFFF);
-  matrix.textFont(Font_4x6);
-  matrix.beginText(7, 2, 0xFFFFFF);
-  matrix.println(" ");
-  matrix.endText();
-  matrix.endDraw();*/
+
 
   
 }
